@@ -1,10 +1,7 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.netology.INH.Book;
-import ru.netology.INH.Product;
-import ru.netology.INH.ProductRepository;
-import ru.netology.INH.Smartphone;
+import ru.netology.INH.*;
 
 public class ProductRepositoryTest {
 
@@ -45,21 +42,6 @@ public class ProductRepositoryTest {
     }
 
     @Test
-    public void shouldRemoveById() {
-
-        repo.save(prod);
-        repo.save(bk);
-        repo.save(phone);
-
-        repo.removeById(22);
-
-        Product[] expected = {prod, phone};
-        Product[] actual = repo.findAll();
-
-        Assertions.assertArrayEquals(expected, actual);
-    }
-
-    @Test
     public void shouldAllRemoveById() {
 
         repo.save(prod);
@@ -74,5 +56,43 @@ public class ProductRepositoryTest {
         Product[] actual = repo.findAll();
 
         Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldRemoveByIdProduct() {
+
+        repo.save(prod);
+        repo.save(bk);
+        repo.save(phone);
+
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            repo.removeById(100);
+            repo.removeById(43);
+            repo.removeById(76);
+        });
+    }
+
+
+    @Test
+    public void RemoveById() {
+
+        repo.save(prod);
+        repo.save(bk);
+        repo.save(phone);
+
+        repo.removeById(22);
+
+        Product[] expected = {prod, phone};
+        Product[] actual = repo.findAll();
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void RemoveByIdNonExistentProduct() {
+
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            repo.removeById(50);
+        });
     }
 }
